@@ -3,10 +3,8 @@ package com.example.thoughts_app.firebase
 import android.app.Activity
 import android.util.Log
 import android.widget.Toast
-import com.example.thoughts_app.activities.MainActivity
-import com.example.thoughts_app.activities.MyProfileActivity
-import com.example.thoughts_app.activities.SignInActivity
-import com.example.thoughts_app.activities.SignUpActivity
+import com.example.thoughts_app.activities.*
+import com.example.thoughts_app.models.Post
 import com.example.thoughts_app.models.User
 import com.example.thoughts_app.utils.Constants
 import com.google.firebase.auth.FirebaseAuth
@@ -26,6 +24,27 @@ class FirestoreClass {
             Log.e(activity.javaClass.simpleName, "Error")
             }
 
+    }
+
+    fun createPost(activity: CreatePostActivity, post: Post){
+        mFirestore.collection(Constants.POSTS)
+            .document()
+            .set(post, SetOptions.merge())
+            .addOnSuccessListener {
+                Log.e(activity.javaClass.simpleName, "Post Successfully Created!")
+                Toast.makeText(activity,
+                    "Post Successfully Created!",
+                    Toast.LENGTH_SHORT).show()
+                activity.postCreatedSuccessfully()
+            }.addOnFailureListener {
+                exception ->
+                activity.hideProgressDialog()
+                Log.e(
+                    activity.javaClass.simpleName,
+                    "Error while creating Post",
+                    exception
+                )
+            }
     }
 
     fun updateUserProfileData(activity: MyProfileActivity,

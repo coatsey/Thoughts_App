@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide
 import com.example.thoughts_app.R
 import com.example.thoughts_app.firebase.FirestoreClass
 import com.example.thoughts_app.models.User
+import com.example.thoughts_app.utils.Constants
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main.*
@@ -22,6 +23,8 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         const val MY_PROFILE_REQUEST_CODE : Int = 11
     }
 
+    private lateinit var mUserName: String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -33,7 +36,9 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         FirestoreClass().loadUserData(this)
 
         fab_create_post.setOnClickListener {
-            startActivity(Intent(this, CreatePostActivity::class.java))
+            val intent = Intent(this, CreatePostActivity::class.java)
+            intent.putExtra(Constants.NAME, mUserName)
+            startActivity(intent)
         }
     }
 
@@ -63,6 +68,8 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     fun updateNavigationUserDetails(user: User){
+
+        mUserName = user.name
         Glide
             .with(this)
             .load(user.image)

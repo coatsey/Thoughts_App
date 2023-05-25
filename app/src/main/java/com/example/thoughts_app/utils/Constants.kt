@@ -8,6 +8,7 @@ import android.webkit.MimeTypeMap
 
 object Constants {
     const val USERS: String = "users"
+    const val POSTS: String = "posts"
 
     const val IMAGE: String = "image"
     const val NAME: String = "name"
